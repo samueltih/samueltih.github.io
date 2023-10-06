@@ -1,0 +1,28 @@
+#myPos {
+  font-size: 8vw;
+  margin: auto;
+  color: rgba(255, 255, 255, 0.5);
+  align-self: center;
+  text-align: center;
+}
+
+h1 {
+  mix-blend-mode: hard-light;
+}
+
+main {
+  display: flex;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background: #eee;
+  /* For browsers that do not support gradients */
+  /* background: -webkit-radial-gradient(33% 49%, circle, rgba(255,255,255,1) 0, rgba(43,116,165,1) 57%, rgba(5,57,91,1) 100%);
+    background: -moz-radial-gradient(33% 49%, circle, rgba(255,255,255,1) 0, rgba(43,116,165,1) 57%, rgba(5,57,91,1) 100%);
+    background: radial-gradient(circle at 33% 49%, rgba(255,255,255,1) 0, rgba(43,116,165,1) 57%, rgba(5,57,91,1) 100%); */
+}

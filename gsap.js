@@ -1,14 +1,12 @@
-const {
-    gsap
-} = require("gsap");
-const { ScrollToPlugin } = require("gsap/dist/ScrollToPlugin");
-const { ScrollTrigger } = require("gsap/dist/ScrollTrigger");
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 if(typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
-module.exports = {
+export {
     gsap,
     ScrollTrigger
 };

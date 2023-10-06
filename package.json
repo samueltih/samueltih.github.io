@@ -10,10 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.0.13",
+    "date-fns": "^2.30.0",
+    "gsap": "file:gsap-bonus.tgz",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-intl": "^6.4.7",
     "vite-plugin-ssr": "^0.4.141",
-    "gsap": "file:gsap-bonus.tgz"
+    "windups": "^1.2.1"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
