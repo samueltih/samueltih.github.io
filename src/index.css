@@ -1,6 +1,20 @@
+@import './assets/fonts/inter/inter.css';
+
 /* @tailwind base;
 @tailwind components; */
 @tailwind utilities;
+
+/* Fonts */
+
+@font-face {
+  font-family: Ethnocentric;
+  src: url("./assets/fonts/ethnocentric/ethnocentric rg.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Graystroke;
+  src: url("./assets/fonts/graystroke/GRAYSTROKE REGULAR.otf") format("opentype");
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -30,7 +44,6 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -41,6 +54,15 @@ h1 {
 }
 
 button {
+  background: transparent;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -57,7 +79,7 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -67,7 +89,7 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button {
+  /* button {
     background-color: #f9f9f9;
-  }
+  } */
 }
