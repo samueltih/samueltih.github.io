@@ -25,11 +25,11 @@ import { useWindupString } from "windups";
 
 const messages = {};
 
-const contact: string = `
+/* const contact: string = `
   Lorem ipsum dolor sit amet consectetur adipisicing elit.
     Exercitationem necessitatibus sed, tenetur aperiam nesciunt cum!
     Neque, temporibus corporis, doloremque molestias incidunt
-    quaerat cum itaque quasi eos et rem! Enim, dolorem.`;
+    quaerat cum itaque quasi eos et rem! Enim, dolorem.`; */
 
 function App() {
   const [locale, setLocale] = useState<"fr" | "en">("en");
