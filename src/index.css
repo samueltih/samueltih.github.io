@@ -1,6 +1,20 @@
+@import './assets/fonts/inter/inter.css';
+
 /* @tailwind base;
 @tailwind components; */
 @tailwind utilities;
+
+/* Fonts */
+
+@font-face {
+  font-family: Ethnocentric;
+  src: url("./assets/fonts/ethnocentric/ethnocentric rg.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Graystroke;
+  src: url("./assets/fonts/graystroke/GRAYSTROKE REGULAR.otf") format("opentype");
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

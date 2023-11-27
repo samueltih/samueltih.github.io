@@ -4,21 +4,19 @@ import "./App.css";
 // i18n
 import { IntlProvider } from "react-intl";
 
-// Phosphor icons
+// Bootstrap icons
 import {
-  Envelope,
-  MapPin,
-  LinkedinLogo,
-  TwitterLogo,
-  GithubLogo,
+  Linkedin,
+  Twitter,
+  Github,
   Globe,
-  Sun,
-  Moon,
-  Buildings,
-} from "@phosphor-icons/react";
+  SunFill,
+  MoonFill,
+  EnvelopeFill,
+} from "react-bootstrap-icons";
+import cx from "classnames";
 
 // Components
-import { Timeline, TimelineItem } from "./components/Timeline";
 import Tag from "./components/Tag";
 import { useWindupString } from "windups";
 
@@ -73,77 +71,90 @@ function App() {
     <>
       <IntlProvider messages={messages} locale={locale} defaultLocale="en">
         {/* <Navbar /> */}
-        <div className="flex flex-col items-center dark box-border">
-          <div className="max-w-screen-xl w-full flex md:gap-4">
-            <div
-              className="flex flex-col gap-4 items-center h-screen box-border py-8 px-4 md:py-16 sticky top-0 transition-all"
-              style={{ height: "100dvh" }}
-            >
-              <div className="flex-1 border-solid border border-indigo-600" />
-              <a
-                href="mailto:samuel.tih@outlook.com"
-                className="dark:text-gray-300"
+        <div className={cx({ dark: theme === "dark" })}>
+          <div
+            className={cx(
+              "flex flex-col items-center box-border dark:bg-black transition-colors"
+            )}
+          >
+            <div className="max-w-screen-xl w-full flex md:gap-4">
+              <div
+                className="flex flex-col gap-4 items-center h-screen box-border py-8 px-4 md:py-16 sticky top-0 transition-all"
+                style={{ height: "100dvh" }}
               >
-                <Envelope size={30} />
-              </a>
-              <a href="https://linkedin.com/in/samuel-tih">
-                <LinkedinLogo size={30} />
-              </a>
-              <a href="https://twitter.com/">
-                <TwitterLogo size={30} />
-              </a>
-              <a href="https://github.com/samueltih">
-                <GithubLogo size={30} />
-              </a>
-            </div>
-
-            <div className="flex-1 flex flex-col gap-4 md:flex-row">
-              <div className="flex-1">
-                <div className="flex flex-col gap-4 py-16 md:sticky h-screen box-border md:top-0">
-                  <div className="flex-1">
-                    <ul className="h-full list-none pl-0">
-                      <li>
-                        <a href="#about">About</a>
-                      </li>
-                      <li>
-                        <a href="#experiences">Work Experience</a>
-                      </li>
-                      <li>
-                        <a href="#gigs">Freelance Gigs</a>
-                      </li>
-                      <li>
-                        <a href="#projects">Projects</a>
-                      </li>
-                      <li>
-                        <a href="#blog">Blog</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <a href="/resume.pdf">Get Resume</a>
-                  </div>
-                  <h1 className="text-[3.25rem] md:text-[4rem] font-bold my-0">
-                    Tih <br />
-                    Samuel
-                    <br /> Mbiyimo'o
-                  </h1>
-                  <p className="font-bold text-2xl">Software Engineer</p>
-                </div>
+                <div className="flex-1 border-solid border border-indigo-600" />
+                <a
+                  href="mailto:samuel.tih@outlook.com"
+                  className="dark:text-gray-300"
+                >
+                  <EnvelopeFill size={25} />
+                </a>
+                <a
+                  href="https://linkedin.com/in/samuel-tih"
+                  className="dark:text-gray-300"
+                >
+                  <Linkedin size={25} />
+                </a>
+                <a href="https://twitter.com/" className="dark:text-gray-300">
+                  <Twitter size={25} />
+                </a>
+                <a
+                  href="https://github.com/samueltih"
+                  className="dark:text-gray-300"
+                >
+                  <Github size={25} />
+                </a>
               </div>
 
-              <div className="flex-1 py-16 flex flex-col gap-16">
-                <section id="about" className="h-[85vh]">
-                  {/* Involved in software development for more than 4 years, I have
+              <div className="flex-1 flex flex-col gap-4 md:flex-row">
+                <div className="flex-1">
+                  <div className="flex flex-col gap-4 py-16 md:sticky h-screen box-border md:top-0">
+                    <div className="flex-1">
+                      <ul className="h-full list-none pl-0">
+                        <li>
+                          <a href="#about">About</a>
+                        </li>
+                        <li>
+                          <a href="#experiences">Work Experience</a>
+                        </li>
+                        <li>
+                          <a href="#gigs">Freelance Gigs</a>
+                        </li>
+                        <li>
+                          <a href="#projects">Projects</a>
+                        </li>
+                        <li>
+                          <a href="#blog">Blog</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <a href="/resume.pdf">Get Resume</a>
+                    </div>
+                    <h1 className="text-[3.25rem] md:text-[4rem] my-0 dark:text-white">
+                      Tih <br />
+                      Samuel
+                      <br /> Mbiyimo'o
+                    </h1>
+                    <p className="font-bold text-2xl dark:text-white">
+                      Software Engineer
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex-1 py-16 flex flex-col gap-16 dark:text-slate-100 transition-colors">
+                  <section id="about" className="h-[85vh]">
+                    {/* Involved in software development for more than 4 years, I have
                 been working as a design and development engineer for more than
                 3 years in the Spring and Angular environment. Having gained a
                 lot of experience in different environments, I have developed a
                 strong knowledge of software architecture, software lifecycle
                 management, and development. */}
-                  {text}
-                </section>
+                    {text}
+                  </section>
 
-                <section id="experience">
-                  {/* <Timeline>
+                  <section id="experience">
+                    {/* <Timeline>
                     <TimelineItem stillWorking start={new Date()}>
                       <h2 className="my-0">Associate Software Engineer</h2>
                       <h4 className="my-0 font-semibold text-gray-500 flex gap-4 items-center">
@@ -203,10 +214,10 @@ function App() {
                       </div>
                     </TimelineItem>
                   </Timeline> */}
-                </section>
+                  </section>
 
-                <section id="experience">
-                  {/* <div className="flex gap-4 items-center my-4">
+                  <section id="experience">
+                    {/* <div className="flex gap-4 items-center my-4">
                     <img
                       src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
                       alt="project-image"
@@ -376,39 +387,39 @@ function App() {
                       </div>
                     </div>
                   </div> */}
-                </section>
+                  </section>
 
-                <section id="projects">
-                  <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-32"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">Document Signer</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Document Signing SaaS software for digitally signing
-                        documesnts.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>React</Tag>
-                        <Tag>Bulma CSS</Tag>
-                        <Tag>MongoDB</Tag>
-                        <Tag>NodeJS</Tag>
-                        <Tag>ExpressJS</Tag>
+                  <section id="projects">
+                    <div className="flex gap-4 items-center my-4">
+                      <img
+                        src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                        alt="project-image"
+                        className="w-32"
+                      />
+                      <div className="flex-1 flex flex-col gap-2">
+                        <div className="flex gap-2 items-center">
+                          <h2 className="my-0 flex-1">Document Signer</h2>
+                          <a href="https://carcam.cm">
+                            <Globe />
+                          </a>
+                          <a href="https://github.com/samueltih">
+                            <Github />
+                          </a>
+                        </div>
+                        <p className="my-2">
+                          Document Signing SaaS software for digitally signing
+                          documesnts.
+                        </p>
+                        <div className="flex gap-2 items-center flex-wrap text-sm">
+                          <Tag>React</Tag>
+                          <Tag>Bulma CSS</Tag>
+                          <Tag>MongoDB</Tag>
+                          <Tag>NodeJS</Tag>
+                          <Tag>ExpressJS</Tag>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {/* <div className="flex gap-4 items-center my-4">
+                    {/* <div className="flex gap-4 items-center my-4">
                     <img
                       src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
                       alt="project-image"
@@ -546,18 +557,24 @@ function App() {
                       </div>
                     </div>
                   </div> */}
-                </section>
+                  </section>
+                </div>
               </div>
-            </div>
-            <div
-              className="flex flex-col gap-4 items-center py-8 px-4 md:py-16 sticky top-0 h-screen box-border transition-all"
-              style={{ height: "100dvh" }}
-            >
-              <button onClick={handleThemeChange}>
-                {theme === "light" ? <Sun size={30} /> : <Moon size={30} />}
-              </button>
-              <button onClick={handleLocaleChange}>{locale}</button>
-              <div className="flex-1 border-solid border border-indigo-600" />
+              <div
+                className="flex flex-col gap-4 items-center py-8 px-4 md:py-16 sticky top-0 h-screen box-border transition-all"
+                style={{ height: "100dvh" }}
+              >
+                <button className="dark:text-white" onClick={handleThemeChange}>
+                  {theme === "light" ? <SunFill size={30} /> : <MoonFill size={30} />}
+                </button>
+                <button
+                  className="dark:text-white"
+                  onClick={handleLocaleChange}
+                >
+                  {locale}
+                </button>
+                <div className="flex-1 border-solid border border-indigo-600" />
+              </div>
             </div>
           </div>
         </div>
