@@ -1,42 +1,52 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import "./App.css";
 
 // i18n
-import { IntlProvider } from "react-intl";
+import { FormattedMessage, IntlProvider } from "react-intl";
 
 // Bootstrap icons
-import {
-  Linkedin,
-  Twitter,
-  Github,
-  Globe,
-  SunFill,
-  MoonFill,
-  EnvelopeFill,
-} from "react-bootstrap-icons";
+import { Github, Globe, Buildings, GeoAlt } from "react-bootstrap-icons";
 import cx from "classnames";
+
+// i18n
+import fr from "./assets/messages/fr.json";
+import en from "./assets/messages/en.json";
 
 // Components
 import Tag from "./components/Tag";
 import { useWindupString } from "windups";
+import Social from "./components/Social";
+
+// import LightSource from "./components/LightSource";
+import { Timeline, TimelineItem } from "./components/Timeline";
 
 // import { useWindupString } from "windups";
-// import { gsap } from "../gsap";
+import { gsap, ScrollTrigger } from "../gsap";
+import Controls from "./components/Controls";
+import Menu from "./components/Menu";
+import Card from "./components/Card";
+import LightSource from "./components/LightSource";
 
-const messages = {};
+export type Locale = "en" | "fr";
+export type Theme = "dark" | "light";
+export type Section = "about" | "experiences" | "gigs" | "projects";
 
-/* const contact: string = `
-  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-    Exercitationem necessitatibus sed, tenetur aperiam nesciunt cum!
-    Neque, temporibus corporis, doloremque molestias incidunt
-    quaerat cum itaque quasi eos et rem! Enim, dolorem.`; */
+interface ThemeContext {
+  theme: Theme;
+  setTheme: (locale: Theme) => void;
+}
+
+export const ThemeContext = createContext<ThemeContext>({} as ThemeContext);
 
 function App() {
-  const [locale, setLocale] = useState<"fr" | "en">("en");
-  const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [locale, setLocale] = useState<Locale>("en");
+  const [theme, setTheme] = useState<Theme>("light");
+  const [section, setSection] = useState<Section>();
 
   // const [text] = useWindupString("Side hustles on which I worked");
   // const [contactText] = useWindupString(contact);
+
+  const messages = locale === "fr" ? fr : en;
 
   const [text] =
     useWindupString(`Involved in software development for more than 4 years, I have
@@ -47,16 +57,22 @@ function App() {
   management, and development.`);
 
   useEffect(() => {
-    // const tl = gsap.timeline({
-    //   scrollTrigger: {
-    //     trigger: "#projects",
-    //     start: "top center",
-    //     end: "bottom center",
-    //     scrub: true,
-    //     markers: true,
-    //   },
-    // });
-    // tl.fromTo("#projects", { opacity: 0 }, { opacity: 1 });
+    const sections = gsap.utils.toArray<HTMLElement>(".section");
+    sections.forEach((section) => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top bottom",
+        end: "bottom top",
+        onEnter: () => {
+          setSection(section.id as Section);
+        },
+        onEnterBack: () => {
+          setSection(section.id as Section);
+        },
+      });
+    });
+
+    gsap.fromTo('.line', {height: 0}, {height: '100%', duration: 2})
   }, []);
 
   function handleThemeChange() {
@@ -69,357 +85,377 @@ function App() {
 
   return (
     <>
-      <IntlProvider messages={messages} locale={locale} defaultLocale="en">
-        {/* <Navbar /> */}
-        <div className={cx({ dark: theme === "dark" })}>
-          <div
-            className={cx(
-              "flex flex-col items-center box-border dark:bg-black transition-colors"
-            )}
-          >
-            <div className="max-w-screen-xl w-full flex md:gap-4">
-              <div
-                className="flex flex-col gap-4 items-center h-screen box-border py-8 px-4 md:py-16 sticky top-0 transition-all"
-                style={{ height: "100dvh" }}
-              >
-                <div className="flex-1 border-solid border border-indigo-600" />
-                <a
-                  href="mailto:samuel.tih@outlook.com"
-                  className="dark:text-gray-300"
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <IntlProvider messages={messages} locale={locale} defaultLocale="en">
+          {/* <Navbar /> */}
+          <div className={cx({ dark: theme === "dark" })}>
+            <div
+              className={cx(
+                "flex flex-col items-center box-border dark:bg-black transition-colors"
+              )}
+            >
+              <div className="max-w-screen-xl w-full flex md:gap-4 z-30">
+                <div
+                  className="flex flex-col gap-4 items-center h-screen box-border py-8 px-4 md:py-16 sticky top-0 transition-all"
+                  style={{ height: "100dvh" }}
                 >
-                  <EnvelopeFill size={25} />
-                </a>
-                <a
-                  href="https://linkedin.com/in/samuel-tih"
-                  className="dark:text-gray-300"
-                >
-                  <Linkedin size={25} />
-                </a>
-                <a href="https://twitter.com/" className="dark:text-gray-300">
-                  <Twitter size={25} />
-                </a>
-                <a
-                  href="https://github.com/samueltih"
-                  className="dark:text-gray-300"
-                >
-                  <Github size={25} />
-                </a>
-              </div>
-
-              <div className="flex-1 flex flex-col gap-4 md:flex-row">
-                <div className="flex-1">
-                  <div className="flex flex-col gap-4 py-16 md:sticky h-screen box-border md:top-0">
-                    <div className="flex-1">
-                      <ul className="h-full list-none pl-0">
-                        <li>
-                          <a href="#about">About</a>
-                        </li>
-                        <li>
-                          <a href="#experiences">Work Experience</a>
-                        </li>
-                        <li>
-                          <a href="#gigs">Freelance Gigs</a>
-                        </li>
-                        <li>
-                          <a href="#projects">Projects</a>
-                        </li>
-                        <li>
-                          <a href="#blog">Blog</a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <a href="/resume.pdf">Get Resume</a>
-                    </div>
-                    <h1 className="text-[3.25rem] md:text-[4rem] my-0 dark:text-white">
-                      Tih <br />
-                      Samuel
-                      <br /> Mbiyimo'o
-                    </h1>
-                    <p className="font-bold text-2xl dark:text-white">
-                      Software Engineer
-                    </p>
+                  <div className="flex-1">
+                    <div className="line h-full border-solid border border-indigo-600" />
                   </div>
+                  <Social />
                 </div>
 
-                <div className="flex-1 py-16 flex flex-col gap-16 dark:text-slate-100 transition-colors">
-                  <section id="about" className="h-[85vh]">
-                    {/* Involved in software development for more than 4 years, I have
+                <div className="flex-1 flex flex-col gap-4 md:flex-row">
+                  <div className="flex-1 px-4">
+                    <div className="flex flex-col gap-0 py-16 md:sticky h-screen box-border md:top-0">
+                      <div className="flex-1">
+                        <Menu active={section} />
+                      </div>
+                      <div className="my-8 flex gap-4 items-center">
+                        <a href="/resume.pdf" className="capitalize text-sm">
+                          <FormattedMessage id="resume" />
+                        </a>
+                        <a href="#" className="capitalize text-sm">
+                          <FormattedMessage id="contact" />
+                        </a>
+                      </div>
+                      <h1
+                        className="text-[3.5rem] md:text-[4rem] my-0 dark:text-white uppercase"
+                        style={{ fontFamily: "VTF Gulax" }}
+                      >
+                        Tih
+                        <br />
+                        Samuel
+                        <br />
+                        Mbiyimo'o
+                      </h1>
+                      <p className="font-semibold text-2xl my-0 text-slate-500 dark:text-gray-500 capitalize">
+                        <FormattedMessage id="title" />
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 py-16 px-4 flex flex-col gap-24 dark:text-slate-100 transition-colors">
+                    <section id="about" className="section h-[85vh]">
+                      {/* Involved in software development for more than 4 years, I have
                 been working as a design and development engineer for more than
                 3 years in the Spring and Angular environment. Having gained a
                 lot of experience in different environments, I have developed a
                 strong knowledge of software architecture, software lifecycle
                 management, and development. */}
-                    {text}
-                  </section>
+                      {text}
+                    </section>
 
-                  <section id="experience">
-                    {/* <Timeline>
-                    <TimelineItem stillWorking start={new Date()}>
-                      <h2 className="my-0">Associate Software Engineer</h2>
-                      <h4 className="my-0 font-semibold text-gray-500 flex gap-4 items-center">
-                        <span className="flex gap-2 items-center whitespace-nowrap">
-                          <Buildings />
-                          <a href="https://sci2m.com">SCI 2M</a>
-                        </span>
-                        <span>-</span>
-                        <span className="flex gap-2 items-center whitespace-nowrap">
-                          <MapPin /> Yaounde, Cameroon
-                        </span>
-                      </h4>
-                      <p className="my-4">
-                         Analyse des besoins  Conception et modélisation
-                        logiciel  Suivi du développement des applications selon
-                        la méthodologie agile Scrum.  Développement des
-                        applications aussi dans le frontend que le backend. 
-                        Maintenance de l’infrastructure IT par des mises à jour
-                        ou par des améliorations.  Formation techniques des
-                        nouveaux venus sur environnement IT de l'entreprise. 
-                        Réalisation de tests.  Documentation
-                      </p>
-                      <div className="flex flex-wrap gap-2 items-center text-sm">
-                        <Tag>Angular</Tag>
-                        <Tag>Spring Boot</Tag>
-                        <Tag>Docker</Tag>
-                        <Tag>RabbitMQ</Tag>
-                        <Tag>Microservices</Tag>
-                      </div>
-                    </TimelineItem>
-                    <TimelineItem
-                      start={new Date("08-01-2017")}
-                      end={new Date("03-01-2018")}
-                    >
-                      <h2 className="my-0">Full Stack Developper</h2>
-                      <h4 className="my-0 font-semibold text-gray-500 flex gap-4 items-center">
-                        <span className="flex gap-2 items-center">
-                          <Buildings />
-                          <a href="https://sci2m.com">Hadron SA</a>
-                        </span>
-                        <span>-</span>
-                        <span className="flex gap-2 items-center">
-                          <MapPin /> Yaounde, Cameroon
-                        </span>
-                      </h4>
-                      <p className="my-4">
-                         Développement de nouvelle fonctionnalité pour la
-                        plateforme « Plexus » à travers la création d’API REST.
-                         Réalisations des interfaces graphiques conformes aux
-                        prototypes.
-                      </p>
-                      <div className="flex flex-wrap gap-2 items-center text-sm">
-                        <Tag>Python</Tag>
-                        <Tag>React</Tag>
-                        <Tag>Django</Tag>
-                        <Tag>REST API</Tag>
-                      </div>
-                    </TimelineItem>
-                  </Timeline> */}
-                  </section>
+                    <section id="experiences" className="section">
+                      <Timeline style={{ width: "150px" }}>
+                        <TimelineItem
+                          stillWorking
+                          start={new Date("2018-06-02")}
+                        >
+                          <h2 className="my-0">Associate Software Engineer</h2>
+                          <h4 className="my-0 font-semibold text-gray-500 dark:text-gray-400 flex gap-2 items-center text-sm">
+                            <span className="flex gap-2 items-center whitespace-nowrap">
+                              <Buildings />
+                              <a href="https://sci2m.com">SCI 2M </a>
+                            </span>
+                            <span>-</span>
+                            <span className="flex gap-2 items-center whitespace-nowrap">
+                              <GeoAlt /> Yaounde, Cameroon
+                            </span>
+                          </h4>
+                          <p className="my-4">
+                             Analyse des besoins  Conception et modélisation
+                            logiciel  Suivi du développement des applications
+                            selon la méthodologie agile Scrum.  Développement
+                            des applications aussi dans le frontend que le
+                            backend.  Maintenance de l’infrastructure IT par
+                            des mises à jour ou par des améliorations. 
+                            Formation techniques des nouveaux venus sur
+                            environnement IT de l'entreprise.  Réalisation de
+                            tests.  Documentation
+                          </p>
+                          <div className="flex flex-wrap gap-2 items-center text-sm text-white">
+                            <Tag>Angular</Tag>
+                            <Tag>Spring Boot</Tag>
+                            <Tag>Docker</Tag>
+                            <Tag>RabbitMQ</Tag>
+                            <Tag>Microservices</Tag>
+                          </div>
+                        </TimelineItem>
+                        <TimelineItem
+                          start={new Date("2017-08-01")}
+                          end={new Date("2018-03-01")}
+                        >
+                          <h2 className="my-0">Full Stack Developper</h2>
+                          <h4 className="my-0 font-semibold text-gray-500 flex gap-2 items-center text-sm">
+                            <span className="flex gap-2 items-center whitespace-nowrap">
+                              <Buildings />
+                              <a
+                                className="flex gap-2 items-center"
+                                href="https://plexuserp.com"
+                              >
+                                Hadron SA
+                              </a>
+                            </span>
+                            <span>-</span>
+                            <span className="flex gap-2 items-center whitespace-nowrap">
+                              <GeoAlt /> Yaounde, Cameroon
+                            </span>
+                          </h4>
+                          <p className="my-4">
+                             Développement de nouvelle fonctionnalité pour la
+                            plateforme « Plexus » à travers la création d’API
+                            REST.  Réalisations des interfaces graphiques
+                            conformes aux prototypes.
+                          </p>
+                          <div className="flex flex-wrap gap-2 items-center text-sm text-white">
+                            <Tag>Python</Tag>
+                            <Tag>React</Tag>
+                            <Tag>Django</Tag>
+                            <Tag>REST API</Tag>
+                          </div>
+                        </TimelineItem>
+                      </Timeline>
+                    </section>
 
-                  <section id="experience">
-                    {/* <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-44"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">Carcam</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Car rental web application targeting the cameroonian
-                        market.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>React</Tag>
-                        <Tag>Bulma CSS</Tag>
-                        <Tag>MongoDB</Tag>
-                        <Tag>NodeJS</Tag>
-                        <Tag>ExpressJS</Tag>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-44"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">Visit My Cellar</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Wine cellar app for booking experiences on target
-                        cellars bundled with a e-commerce shop for selling
-                        cellar products.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>React</Tag>
-                        <Tag>MySQL</Tag>
-                        <Tag>NodeJS</Tag>
-                        <Tag>ExpressJS</Tag>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-44"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">Urgence Plus Monde</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Wine cellar app for booking experiences on target
-                        cellars bundled with a e-commerce shop for selling
-                        cellar products.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>React</Tag>
-                        <Tag>MySQL</Tag>
-                        <Tag>NodeJS</Tag>
-                        <Tag>ExpressJS</Tag>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-44"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">Uzenze</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Wine cellar app for booking experiences on target
-                        cellars bundled with a e-commerce shop for selling
-                        cellar products.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>React</Tag>
-                        <Tag>MySQL</Tag>
-                        <Tag>NodeJS</Tag>
-                        <Tag>ExpressJS</Tag>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-44"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">Systac</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Odoo module for the handling of bank transactions.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>React</Tag>
-                        <Tag>MySQL</Tag>
-                        <Tag>NodeJS</Tag>
-                        <Tag>ExpressJS</Tag>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 items-center my-4">
-                    <img
-                      src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                      alt="project-image"
-                      className="w-44"
-                    />
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex gap-2 items-center">
-                        <h2 className="my-0 flex-1">The Vision</h2>
-                        <a href="https://carcam.cm">
-                          <Globe />
-                        </a>
-                        <a href="https://github.com/samueltih">
-                          <GithubLogo />
-                        </a>
-                      </div>
-                      <p className="my-2">
-                        Odoo module for the handling of bank transactions.
-                      </p>
-                      <div className="flex gap-2 items-center flex-wrap text-sm">
-                        <Tag>Svelte</Tag>
-                        <Tag>Svelte Kit</Tag>
-                        <Tag>Vite</Tag>
-                        <Tag>ExpressJS</Tag>
-                      </div>
-                    </div>
-                  </div> */}
-                  </section>
-
-                  <section id="projects">
-                    <div className="flex gap-4 items-center my-4">
-                      <img
-                        src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                        alt="project-image"
-                        className="w-32"
-                      />
-                      <div className="flex-1 flex flex-col gap-2">
-                        <div className="flex gap-2 items-center">
-                          <h2 className="my-0 flex-1">Document Signer</h2>
-                          <a href="https://carcam.cm">
-                            <Globe />
-                          </a>
-                          <a href="https://github.com/samueltih">
-                            <Github />
-                          </a>
-                        </div>
+                    <section id="gigs" className="section flex flex-col gap-4">
+                      <Card
+                        title={"Carcam"}
+                        image={
+                          "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                        }
+                        tags={Array.of(
+                          "React",
+                          "Bulma",
+                          "MongoDB",
+                          "NodeJS",
+                          "ExpressJS"
+                        )}
+                      >
                         <p className="my-2">
-                          Document Signing SaaS software for digitally signing
-                          documesnts.
+                          Car rental web application targeting the cameroonian
+                          market.
                         </p>
-                        <div className="flex gap-2 items-center flex-wrap text-sm">
-                          <Tag>React</Tag>
-                          <Tag>Bulma CSS</Tag>
-                          <Tag>MongoDB</Tag>
-                          <Tag>NodeJS</Tag>
-                          <Tag>ExpressJS</Tag>
+                      </Card>
+                      <Card
+                        title={"Visit My Cellar"}
+                        image={
+                          "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                        }
+                        tags={Array.of(
+                          "React",
+                          "MySQL",
+                          "Apollo GraphQL",
+                          "SequelizeJS",
+                          "ExpressJS",
+                          "NodeJs"
+                        )}
+                      >
+                        <p className="my-2">
+                            Wine cellar app for booking experiences on target
+                            cellars bundled with a e-commerce shop for selling
+                            cellar products.
+                          </p>
+                      </Card>
+                      <Card
+                        title={"Systac"}
+                        image={
+                          "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                        }
+                        tags={Array.of(
+                          "Odoo",
+                          "Python 2",
+                          "Pentaho Reports",
+                        )}
+                      >
+                        <p className="my-2">
+                            Odoo module for the handling of bank transactions.
+                          </p>
+                      </Card>
+
+                      {/* <div className="flex gap-4 items-center my-4">
+                        <img
+                          src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          alt="project-image"
+                          className="w-32"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex gap-2 items-center">
+                            <h2 className="my-0 flex-1">Urgence Plus Monde</h2>
+                            <a href="https://carcam.cm">
+                              <Globe />
+                            </a>
+                            <a href="https://github.com/samueltih">
+                              <Github />
+                            </a>
+                          </div>
+                          <p className="my-2">
+                            Wine cellar app for booking experiences on target
+                            cellars bundled with a e-commerce shop for selling
+                            cellar products.
+                          </p>
+                          <div className="flex gap-2 items-center flex-wrap text-sm">
+                            <Tag>React</Tag>
+                            <Tag>MySQL</Tag>
+                            <Tag>NodeJS</Tag>
+                            <Tag>ExpressJS</Tag>
+                          </div>
+                        </div>
+                      </div> */}
+                      {/* <div className="flex gap-4 items-center my-4">
+                        <img
+                          src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          alt="project-image"
+                          className="w-32"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex gap-2 items-center">
+                            <h2 className="my-0 flex-1">Uzenze</h2>
+                            <a href="https://carcam.cm">
+                              <Globe />
+                            </a>
+                            <a href="https://github.com/samueltih">
+                              <Github />
+                            </a>
+                          </div>
+                          <p className="my-2">
+                            Wine cellar app for booking experiences on target
+                            cellars bundled with a e-commerce shop for selling
+                            cellar products.
+                          </p>
+                          <div className="flex gap-2 items-center flex-wrap text-sm">
+                            <Tag>React</Tag>
+                            <Tag>MySQL</Tag>
+                            <Tag>NodeJS</Tag>
+                            <Tag>ExpressJS</Tag>
+                          </div>
+                        </div>
+                      </div> */}
+                      <div className="flex gap-4 items-center my-4">
+                        <img
+                          src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          alt="project-image"
+                          className="w-32"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex gap-2 items-center">
+                            <h2 className="my-0 flex-1">Systac</h2>
+                            <a href="https://carcam.cm">
+                              <Globe />
+                            </a>
+                            <a href="https://github.com/samueltih">
+                              <Github />
+                            </a>
+                          </div>
+                          <p className="my-2">
+                            Odoo module for the handling of bank transactions.
+                          </p>
+                          <div className="flex gap-2 items-center flex-wrap text-sm">
+                            <Tag>React</Tag>
+                            <Tag>MySQL</Tag>
+                            <Tag>NodeJS</Tag>
+                            <Tag>ExpressJS</Tag>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    {/* <div className="flex gap-4 items-center my-4">
+                      <div className="flex gap-4 items-center my-4">
+                        <img
+                          src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          alt="project-image"
+                          className="w-32"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex gap-2 items-center">
+                            <h2 className="my-0 flex-1">The Vision</h2>
+                            <a href="https://carcam.cm">
+                              <Globe />
+                            </a>
+                            <a href="https://github.com/samueltih">
+                              <Github />
+                            </a>
+                          </div>
+                          <p className="my-2">
+                            Odoo module for the handling of bank transactions.
+                          </p>
+                          <div className="flex gap-2 items-center flex-wrap text-sm">
+                            <Tag>Svelte</Tag>
+                            <Tag>Svelte Kit</Tag>
+                            <Tag>Vite</Tag>
+                            <Tag>ExpressJS</Tag>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section
+                      id="projects"
+                      className="section flex flex-col gap-8"
+                    >
+                      <div className="relative flex gap-4 items-center my-4">
+                        <div className="bg-indigo-100 dark:bg-indigo-950 dark:bg-opacity-50 absolute -z-20 left-2 -top-4 h-full w-full rounded-lg"></div>
+                        <div className="bg-slate-200 dark:bg-slate-900 absolute -z-10 -left-2 top-4 h-full w-full rounded-lg "></div>
+                        <img
+                          src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          alt="project-image"
+                          className="w-32"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex gap-2 items-center">
+                            <h2 className="my-0 flex-1">Document Signer</h2>
+                            <a href="https://carcam.cm">
+                              <Globe />
+                            </a>
+                            <a href="https://github.com/samueltih">
+                              <Github />
+                            </a>
+                          </div>
+                          <p className="my-2">
+                            Document Signing SaaS software for digitally signing
+                            documesnts.
+                          </p>
+                          <div className="flex gap-2 items-center flex-wrap text-sm">
+                            <Tag>React</Tag>
+                            <Tag>Bulma CSS</Tag>
+                            <Tag>MongoDB</Tag>
+                            <Tag>NodeJS</Tag>
+                            <Tag>ExpressJS</Tag>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="relative flex gap-4 items-center my-4 z-10">
+                        <div className="bg-indigo-100 dark:bg-indigo-950 dark:bg-opacity-50 absolute -z-20 left-2 -top-4 h-full w-full rounded-lg"></div>
+                        <div className="bg-slate-200 dark:bg-slate-900 absolute -z-10 -left-2 top-4 h-full w-full rounded-lg"></div>
+                        <img
+                          src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          alt="project-image"
+                          className="w-32"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex gap-2 items-center">
+                            <h2 className="my-0 flex-1">Document Signer</h2>
+                            <a href="https://carcam.cm">
+                              <Globe />
+                            </a>
+                            <a href="https://github.com/samueltih">
+                              <Github />
+                            </a>
+                          </div>
+                          <p className="my-2">
+                            Document Signing SaaS software for digitally signing
+                            documesnts.
+                          </p>
+                          <div className="flex gap-2 items-center flex-wrap text-sm">
+                            <Tag>React</Tag>
+                            <Tag>Bulma CSS</Tag>
+                            <Tag>MongoDB</Tag>
+                            <Tag>NodeJS</Tag>
+                            <Tag>ExpressJS</Tag>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* <div className="flex gap-4 items-center my-4">
                     <img
                       src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
                       alt="project-image"
@@ -557,28 +593,49 @@ function App() {
                       </div>
                     </div>
                   </div> */}
-                  </section>
+                      <div
+                        id="contact"
+                        className="flex flex-col h-[90vh] gap-4"
+                      >
+                        <h1>Contact Me!</h1>
+                        <p className="dark:text-slate-300">
+                          I am always in search of new challenges and
+                          experiences. So, if you're interested in any
+                          collaboration, business inquiry or personal mentoring,
+                          come say hi to me{" "}
+                          <a
+                            href="mailto:samuel.tih@outlook.com"
+                            className="font-bold dark:text-white animate-bounce"
+                          >
+                            here!
+                          </a>
+                          <span>&#128513;</span>
+                        </p>
+                      </div>
+                    </section>
+                  </div>
                 </div>
-              </div>
-              <div
-                className="flex flex-col gap-4 items-center py-8 px-4 md:py-16 sticky top-0 h-screen box-border transition-all"
-                style={{ height: "100dvh" }}
-              >
-                <button className="dark:text-white" onClick={handleThemeChange}>
-                  {theme === "light" ? <SunFill size={30} /> : <MoonFill size={30} />}
-                </button>
-                <button
-                  className="dark:text-white"
-                  onClick={handleLocaleChange}
+                <div
+                  className="flex flex-col gap-4 items-center py-8 px-4 md:py-16 sticky top-0 h-screen box-border transition-all"
+                  style={{ height: "100dvh" }}
                 >
-                  {locale}
-                </button>
-                <div className="flex-1 border-solid border border-indigo-600" />
+                  <Controls
+                    locale={locale}
+                    theme={theme}
+                    onLocaleChange={handleLocaleChange}
+                    onThemeChange={handleThemeChange}
+                  />
+                  <div className="flex-1">
+                    <div className="line h-full border-solid border border-indigo-600" />
+                  </div> 
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </IntlProvider>
+          <LightSource color="#cccccc30" deviation={150} />
+        <LightSource color="#5520a930" deviation={-150} />
+        </IntlProvider>
+      </ThemeContext.Provider>
       {/* <div className="flex justify-center">
         <div className="max-w-screen-xl w-full h-[90vh] flex gap-32 items-center justify-center">
           <span className="flex-1 text-[5rem] font-bold">
@@ -841,7 +898,7 @@ function App() {
                 </div>
                 <div>
                   <a
-                    href="mailto:samuel.tih@outlook.com"
+                    href="mailto:samuel.tih'(@)'outlook.com"
                     className="flex hover:text-blue-500 gap-4 my-1"
                   >
                     <Envelope size={25} /> samuel.tih@outlook.com

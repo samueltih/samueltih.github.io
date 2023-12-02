@@ -13,10 +13,13 @@
     "@phosphor-icons/react": "^2.0.13",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
+    "final-form": "^4.20.10",
     "gsap": "file:gsap-bonus.tgz",
     "react": "^18.2.0",
     "react-bootstrap-icons": "^1.10.3",
+    "react-country-flag": "^3.1.0",
     "react-dom": "^18.2.0",
+    "react-final-form": "^6.5.9",
     "react-intl": "^6.4.7",
     "vite-plugin-ssr": "^0.4.141",
     "windups": "^1.2.1"
