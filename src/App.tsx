@@ -5,7 +5,7 @@ import "./App.css";
 import { FormattedMessage, IntlProvider } from "react-intl";
 
 // Bootstrap icons
-import { Github, Globe, Buildings, GeoAlt } from "react-bootstrap-icons";
+import { Buildings, GeoAlt } from "react-bootstrap-icons";
 import cx from "classnames";
 
 // i18n
@@ -36,15 +36,20 @@ interface ThemeContext {
   setTheme: (locale: Theme) => void;
 }
 
+interface Position {
+  x: number,
+  y: number
+}
+
 export const ThemeContext = createContext<ThemeContext>({} as ThemeContext);
 
 function App() {
+
   const [locale, setLocale] = useState<Locale>("en");
   const [theme, setTheme] = useState<Theme>("light");
   const [section, setSection] = useState<Section>();
 
-  // const [text] = useWindupString("Side hustles on which I worked");
-  // const [contactText] = useWindupString(contact);
+  const [position, setPosition] = useState<Position>({x: 0, y: 0});
 
   const messages = locale === "fr" ? fr : en;
 
@@ -58,7 +63,7 @@ function App() {
 
   useEffect(() => {
     const sections = gsap.utils.toArray<HTMLElement>(".section");
-    sections.forEach((section) => {
+    sections.forEach((section: HTMLDivElement) => {
       ScrollTrigger.create({
         trigger: section,
         start: "top bottom",
@@ -72,7 +77,7 @@ function App() {
       });
     });
 
-    gsap.fromTo('.line', {height: 0}, {height: '100%', duration: 2})
+    gsap.fromTo(".line", { height: 0 }, { height: "100%", duration: 2 });
   }, []);
 
   function handleThemeChange() {
@@ -82,6 +87,22 @@ function App() {
   function handleLocaleChange() {
     setLocale((value) => (value === "fr" ? "en" : "fr"));
   }
+
+  function handleMouseMove(ev: MouseEvent) {
+    setPosition({
+      x: ev.clientX,
+      y: ev.clientY,
+    });
+  }
+
+  useEffect(() => {
+    if (window) {
+      document.addEventListener("mousemove", handleMouseMove);
+      return () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -94,9 +115,9 @@ function App() {
                 "flex flex-col items-center box-border dark:bg-black transition-colors"
               )}
             >
-              <div className="max-w-screen-xl w-full flex md:gap-4 z-30">
+              <div className="max-w-screen-xl w-full flex md:gap-2 lg:gap-4 z-30">
                 <div
-                  className="flex flex-col gap-4 items-center h-screen box-border py-8 px-4 md:py-16 sticky top-0 transition-all"
+                  className="flex flex-col gap-4 items-center h-screen box-border py-8 px-2 md:px-4 md:py-16 sticky top-0 transition-all"
                   style={{ height: "100dvh" }}
                 >
                   <div className="flex-1">
@@ -105,22 +126,26 @@ function App() {
                   <Social />
                 </div>
 
-                <div className="flex-1 flex flex-col gap-4 md:flex-row">
-                  <div className="flex-1 px-4">
-                    <div className="flex flex-col gap-0 py-16 md:sticky h-screen box-border md:top-0">
+                <div className="flex-1 flex flex-col md:gap-2 lg:flex-row lg:gap-4">
+                  <div className="flex-1 px-2 lg:px-4">
+                    <div className="flex flex-col gap-0 py-8 md:py-16 md:sticky h-[100svh] lg:h-screen box-border md:top-0">
                       <div className="flex-1">
-                        <Menu active={section} />
+                        <Menu className="hidden lg:block" active={section} />
                       </div>
-                      <div className="my-8 flex gap-4 items-center">
+                      <div className="mb-4 lg:my-8 flex gap-4 items-center lg:flex hidden">
                         <a href="/resume.pdf" className="capitalize text-sm">
                           <FormattedMessage id="resume" />
                         </a>
-                        <a href="#" className="capitalize text-sm">
-                          <FormattedMessage id="contact" />
+                        <a
+                          href="mailto:samuel.tih@outlook.com"
+                          className="capitalize text-sm"
+                        >
+                          <FormattedMessage id="contact" />{" "}
+                          <span className="animate-bounce">&#128578;</span>
                         </a>
                       </div>
                       <h1
-                        className="text-[3.5rem] md:text-[4rem] my-0 dark:text-white uppercase"
+                        className="text-[3rem] lg:text-[4rem] my-0 dark:text-white uppercase"
                         style={{ fontFamily: "VTF Gulax" }}
                       >
                         Tih
@@ -129,14 +154,27 @@ function App() {
                         <br />
                         Mbiyimo'o
                       </h1>
-                      <p className="font-semibold text-2xl my-0 text-slate-500 dark:text-gray-500 capitalize">
+                      <p className="font-semibold text-base md:text-2xl my-0 text-slate-500 dark:text-gray-500 capitalize">
                         <FormattedMessage id="title" />
                       </p>
+                      <div className="my-8 flex gap-4 items-center lg:hidden">
+                        <a href="/resume.pdf" className="capitalize text-sm">
+                          <FormattedMessage id="resume" />
+                        </a>
+                        <a
+                          href="mailto:samuel.tih@outlook.com"
+                          className="capitalize text-sm flex items-center gap-2"
+                        >
+                          <FormattedMessage id="contact" />{" "}
+                          <span className="animate-bounce">&#128578;</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex-1 py-16 px-4 flex flex-col gap-24 dark:text-slate-100 transition-colors">
-                    <section id="about" className="section h-[85vh]">
+                  <div className="flex-1 py-16 px-2 flex flex-col gap-16 md:px-4 box-border dark:text-slate-100 transition-colors">
+                    <section id="about" className="section lg:h-[85vh]">
+                      <h2 className="text-lg font-bold lg:hidden">ABOUT</h2>
                       {/* Involved in software development for more than 4 years, I have
                 been working as a design and development engineer for more than
                 3 years in the Spring and Angular environment. Having gained a
@@ -147,13 +185,16 @@ function App() {
                     </section>
 
                     <section id="experiences" className="section">
-                      <Timeline style={{ width: "150px" }}>
+                      <h2 className="text-lg font-bold lg:hidden my-4">
+                        EXPERIENCES
+                      </h2>
+                      <Timeline>
                         <TimelineItem
                           stillWorking
                           start={new Date("2018-06-02")}
                         >
                           <h2 className="my-0">Associate Software Engineer</h2>
-                          <h4 className="my-0 font-semibold text-gray-500 dark:text-gray-400 flex gap-2 items-center text-sm">
+                          <h4 className="my-0 font-semibold text-gray-500 dark:text-gray-400 flex gap-2 items-center text-xs md:text-sm">
                             <span className="flex gap-2 items-center whitespace-nowrap">
                               <Buildings />
                               <a href="https://sci2m.com">SCI 2M </a>
@@ -186,8 +227,8 @@ function App() {
                           start={new Date("2017-08-01")}
                           end={new Date("2018-03-01")}
                         >
-                          <h2 className="my-0">Full Stack Developper</h2>
-                          <h4 className="my-0 font-semibold text-gray-500 flex gap-2 items-center text-sm">
+                          <h2 className="my-0">Full Stack Developer</h2>
+                          <h4 className="my-0 font-semibold text-gray-500 flex gap-2 items-center text-[0.8rem]">
                             <span className="flex gap-2 items-center whitespace-nowrap">
                               <Buildings />
                               <a
@@ -218,60 +259,61 @@ function App() {
                       </Timeline>
                     </section>
 
-                    <section id="gigs" className="section flex flex-col gap-4">
-                      <Card
-                        title={"Carcam"}
-                        image={
-                          "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                        }
-                        tags={Array.of(
-                          "React",
-                          "Bulma",
-                          "MongoDB",
-                          "NodeJS",
-                          "ExpressJS"
-                        )}
-                      >
-                        <p className="my-2">
-                          Car rental web application targeting the cameroonian
-                          market.
-                        </p>
-                      </Card>
-                      <Card
-                        title={"Visit My Cellar"}
-                        image={
-                          "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                        }
-                        tags={Array.of(
-                          "React",
-                          "MySQL",
-                          "Apollo GraphQL",
-                          "SequelizeJS",
-                          "ExpressJS",
-                          "NodeJs"
-                        )}
-                      >
-                        <p className="my-2">
+                    <section id="gigs" className="section">
+                      <h2 className="text-lg font-bold lg:hidden my-4">
+                        PROJECTS
+                      </h2>
+                      <div className="flex flex-col gap-8">
+                        <Card
+                          title={"Carcam"}
+                          thumbnail={
+                            "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          }
+                          tags={Array.of(
+                            "React",
+                            "Bulma",
+                            "MongoDB",
+                            "NodeJS",
+                            "ExpressJS"
+                          )}
+                        >
+                          <p className="my-2">
+                            Car rental web application targeting the cameroonian
+                            market.
+                          </p>
+                        </Card>
+                        <Card
+                          title={"Visit My Cellar"}
+                          thumbnail={
+                            "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          }
+                          tags={Array.of(
+                            "React",
+                            "MySQL",
+                            "Apollo GraphQL",
+                            "SequelizeJS",
+                            "ExpressJS",
+                            "NodeJs"
+                          )}
+                        >
+                          <p className="my-2">
                             Wine cellar app for booking experiences on target
                             cellars bundled with a e-commerce shop for selling
                             cellar products.
                           </p>
-                      </Card>
-                      <Card
-                        title={"Systac"}
-                        image={
-                          "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
-                        }
-                        tags={Array.of(
-                          "Odoo",
-                          "Python 2",
-                          "Pentaho Reports",
-                        )}
-                      >
-                        <p className="my-2">
+                        </Card>
+                        <Card
+                          title={"Systac"}
+                          thumbnail={
+                            "https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
+                          }
+                          tags={Array.of("Odoo", "Python 2", "Pentaho Reports")}
+                        >
+                          <p className="my-2">
                             Odoo module for the handling of bank transactions.
                           </p>
-                      </Card>
+                        </Card>
+                      </div>
 
                       {/* <div className="flex gap-4 items-center my-4">
                         <img
@@ -331,7 +373,7 @@ function App() {
                           </div>
                         </div>
                       </div> */}
-                      <div className="flex gap-4 items-center my-4">
+                      {/* <div className="flex gap-4 items-center my-4">
                         <img
                           src="https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912https://outofthesandbox.com/cdn/shop/files/Flex-Trending-2_1600x.png?v=1692198912"
                           alt="project-image"
@@ -384,14 +426,14 @@ function App() {
                             <Tag>ExpressJS</Tag>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </section>
 
                     <section
                       id="projects"
                       className="section flex flex-col gap-8"
                     >
-                      <div className="relative flex gap-4 items-center my-4">
+                      {/* <div className="relative flex gap-4 items-center my-4">
                         <div className="bg-indigo-100 dark:bg-indigo-950 dark:bg-opacity-50 absolute -z-20 left-2 -top-4 h-full w-full rounded-lg"></div>
                         <div className="bg-slate-200 dark:bg-slate-900 absolute -z-10 -left-2 top-4 h-full w-full rounded-lg "></div>
                         <img
@@ -453,7 +495,7 @@ function App() {
                             <Tag>ExpressJS</Tag>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* <div className="flex gap-4 items-center my-4">
                     <img
@@ -593,7 +635,7 @@ function App() {
                       </div>
                     </div>
                   </div> */}
-                      <div
+                      {/* <div
                         id="contact"
                         className="flex flex-col h-[90vh] gap-4"
                       >
@@ -611,12 +653,12 @@ function App() {
                           </a>
                           <span>&#128513;</span>
                         </p>
-                      </div>
+                      </div> */}
                     </section>
                   </div>
                 </div>
                 <div
-                  className="flex flex-col gap-4 items-center py-8 px-4 md:py-16 sticky top-0 h-screen box-border transition-all"
+                  className="flex flex-col gap-4 items-center py-8 px-2 md:px-4 md:py-16 sticky top-0 h-screen box-border transition-all"
                   style={{ height: "100dvh" }}
                 >
                   <Controls
@@ -627,13 +669,26 @@ function App() {
                   />
                   <div className="flex-1">
                     <div className="line h-full border-solid border border-indigo-600" />
-                  </div> 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <LightSource color="#cccccc30" deviation={150} />
-        <LightSource color="#5520a930" deviation={-150} />
+
+          <div className="fixed top-0 left-0 h-screen w-screen">
+            <LightSource
+              x={position.x}
+              y={position.y}
+              color="#cccccc30"
+              deviation={150}
+            />
+            <LightSource
+              x={position.x}
+              y={position.y}
+              color="#5520a930"
+              deviation={-150}
+            />
+          </div>
         </IntlProvider>
       </ThemeContext.Provider>
       {/* <div className="flex justify-center">

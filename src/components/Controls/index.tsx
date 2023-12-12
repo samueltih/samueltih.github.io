@@ -5,6 +5,7 @@ import cx from 'classnames';
 
 // Animation
 import { gsap } from "../../../gsap";
+import { DEFAULT_ICON_SIZE } from "@utils/constants";
 
 type ControlsProps = HTMLAttributes<HTMLDivElement> & {
     locale: 'en' | 'fr',
@@ -31,9 +32,9 @@ const Controls: FunctionComponent<ControlsProps> = ({locale, theme, onThemeChang
           onClick={onThemeChange}
         >
           {theme === "light" ? (
-            <SunFill size={30} />
+            <SunFill size={DEFAULT_ICON_SIZE} />
           ) : (
-            <MoonFill size={30} />
+            <MoonFill size={DEFAULT_ICON_SIZE} />
           )}
         </button>
         <button
@@ -45,7 +46,6 @@ const Controls: FunctionComponent<ControlsProps> = ({locale, theme, onThemeChang
           ) : (
             <ReactCountryFlag countryCode="US" />
           )}
-          {locale}
         </button></div>);
 }
 
