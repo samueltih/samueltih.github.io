@@ -10,7 +10,7 @@ type MenuProps = HTMLAttributes<HTMLUListElement> & {
 
 const Menu: FunctionComponent<MenuProps> = ({ active, ...props }) => {
   return (
-    <ul {...{...props, className: cx("h-full list-none pl-0 capitalize text-lg", props.className)}}>
+    <ul {...{...props, className: cx("h-full list-none pl-0 capitalize md:text-lg", props.className)}}>
       <li>
         <a href="#about" className={cx("flex gap-2 items-center transition-all", {'text-slate-700 dark:text-slate-500': active !== 'about'})}>
           <FormattedMessage id="about" /> {active === 'about' && <CircleFill size={7} className="animate-bounce"/>}

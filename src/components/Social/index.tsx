@@ -4,6 +4,7 @@ import cx from "classnames";
 
 // Animation
 import { gsap } from "../../../gsap";
+import { DEFAULT_ICON_SIZE } from "../../utils/constants";
 
 type SocialProps = HTMLAttributes<HTMLDivElement> & {
   email?: string;
@@ -16,6 +17,7 @@ type SocialProps = HTMLAttributes<HTMLDivElement> & {
 const Social: FunctionComponent<SocialProps> = ({
   github = "https://github.com/samueltih",
   linkedIn = "https://linkedin.com/in/samuel-tih",
+  instagram = "#",
   x = "https://twitter.com/",
   ...props
 }) => {
@@ -35,16 +37,16 @@ const Social: FunctionComponent<SocialProps> = ({
       }}
     >
       <a href={github} className="social text-slate-500 dark:text-gray-300">
-        <Github size={25} />
+        <Github size={DEFAULT_ICON_SIZE} />
       </a>
       <a href={linkedIn} className="social text-slate-500 dark:text-gray-300">
-        <Linkedin size={25} />
+        <Linkedin size={DEFAULT_ICON_SIZE} />
       </a>
-      <a href={'#'} className="social text-slate-500 dark:text-gray-300">
-        <Instagram size={25} />
+      <a href={instagram} className="social text-slate-500 dark:text-gray-300">
+        <Instagram size={DEFAULT_ICON_SIZE} />
       </a>
       <a href={x} className="social text-slate-500 dark:text-gray-300">
-        <Twitter size={25} />
+        <Twitter size={DEFAULT_ICON_SIZE} />
       </a>
       
     </div>
