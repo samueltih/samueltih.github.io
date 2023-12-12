@@ -21,7 +21,7 @@ import Social from "./components/Social";
 import { Timeline, TimelineItem } from "./components/Timeline";
 
 // import { useWindupString } from "windups";
-import { gsap, ScrollTrigger } from "../gsap";
+import { gsap, ScrollTrigger } from "../gsaps";
 import Controls from "./components/Controls";
 import Menu from "./components/Menu";
 import Card from "./components/Card";
@@ -63,7 +63,7 @@ function App() {
 
   useEffect(() => {
     const sections = gsap.utils.toArray<HTMLElement>(".section");
-    sections.forEach((section: HTMLDivElement) => {
+    sections.forEach((section) => {
       ScrollTrigger.create({
         trigger: section,
         start: "top bottom",
