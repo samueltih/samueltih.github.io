@@ -4,7 +4,7 @@ import ReactCountryFlag from "react-country-flag";
 import cx from 'classnames';
 
 // Animation
-import { gsap } from "../../../gsap";
+import { gsap } from "../../../gsaps";
 import { DEFAULT_ICON_SIZE } from "@utils/constants";
 
 type ControlsProps = HTMLAttributes<HTMLDivElement> & {
