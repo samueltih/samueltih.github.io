@@ -3,7 +3,7 @@ import { Linkedin, Twitter, Github, Instagram } from "react-bootstrap-icons";
 import cx from "classnames";
 
 // Animation
-import { gsap } from "../../../gsap";
+import { gsap } from "../../../gsaps";
 import { DEFAULT_ICON_SIZE } from "../../utils/constants";
 
 type SocialProps = HTMLAttributes<HTMLDivElement> & {
